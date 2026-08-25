@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đếm ngược Mili-giây</title>
+
+    <title>Đang tải...</title>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -14,31 +16,36 @@
             height: 100vh;
             margin: 0;
         }
+
         .card {
             background: white;
             padding: 30px;
             border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             text-align: center;
             max-width: 450px;
             width: 100%;
         }
+
         h2 {
             color: #1a73e8;
             margin-bottom: 20px;
         }
+
         .timer {
             font-size: 2.2rem;
             font-weight: bold;
             color: #d93025;
             margin: 20px 0;
-            font-family: 'Courier New', Courier, monospace;
+            font-family: "Courier New", Courier, monospace;
         }
+
         .unit {
             font-size: 1rem;
             color: #5f6368;
             font-weight: normal;
         }
+
         .info {
             color: #5f6368;
             font-size: 0.95rem;
@@ -46,39 +53,59 @@
         }
     </style>
 </head>
+
 <body>
 
-<div class="card">
-    <h2>Thời Gian Chờ Xóa Project</h2>
-    <div class="info">Mili-giây còn lại:</div>
-    
-    <div class="timer">
-        <span id="countdown">0</span> <span class="unit">ms</span>
+    <div class="card">
+        <h2>Thời Gian Chờ Xóa Project</h2>
+
+        <div class="info">
+            Mili-giây còn lại:
+        </div>
+
+        <div class="timer">
+            <span id="countdown">0</span>
+            <span class="unit">ms</span>
+        </div>
+
+        <div class="info">
+            Ngày giải phóng quota:
+            <br>
+            <strong>15/09/2026</strong>
+        </div>
     </div>
-    
-    <div class="info">Ngày giải phóng quota:<br><strong>15/09/2026</strong></div>
-</div>
 
-<script>
-    const targetDate = new Date('2026-09-15T00:00:00').getTime();
+    <script>
+        const targetDate = new Date(
+            "2026-09-15T00:00:00"
+        ).getTime();
 
-    function updateTimer() {
-        const now = new Date().getTime();
-        const timeLeft = targetDate - now;
+        function updateTimer() {
+            const now = Date.now();
+            const timeLeft = targetDate - now;
 
-        if (timeLeft <= 0) {
-            document.getElementById('countdown').innerText = "0";
-            return;
+            if (timeLeft <= 0) {
+                document.getElementById("countdown").textContent = "0";
+                document.title = "0 ms | Hết thời gian";
+                return;
+            }
+
+            const formattedTime = Math.floor(timeLeft)
+                .toLocaleString("en-US");
+
+            // Hiển thị trên trang
+            document.getElementById("countdown").textContent =
+                formattedTime;
+
+            // Hiển thị trên tên tab
+            document.title =
+                formattedTime + " ms | Project";
+
+            requestAnimationFrame(updateTimer);
         }
 
-        // Định dạng số có dấu phẩy phân cách hàng nghìn cho dễ nhìn
-        document.getElementById('countdown').innerText = timeLeft.toLocaleString('en-US');
-
-        requestAnimationFrame(updateTimer);
-    }
-
-    requestAnimationFrame(updateTimer);
-</script>
+        updateTimer();
+    </script>
 
 </body>
 </html>
